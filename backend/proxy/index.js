@@ -1,7 +1,14 @@
 import http from "http";
 import https from "https";
-import url from "url";
 import { ethers } from "ethers";
+import OpenAI from "openai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 const PORT = process.env.PORT || 8545;
 
@@ -122,8 +129,18 @@ const server = http.createServer((req, res) => {
           relayRes.on("data", (chunk) => {
             relayData += chunk;
           });
-          relayRes.on("end", () => {
-            console.log("Relay server response:", relayData);
+          relayRes.on("end", async () => {
+            const response = await client.responses.create({
+              model: "gpt-4o",
+              instructions: `You are a security expert. Given the following Ethereum execution trace, analyze it and determine if it is malicious, suspicious, or benign. Explain your reasoning.
+
+              Return your answer in the following format:
+              - Verdict: [malicious/suspicious/benign]
+              - Reason: [explanation]`,
+              input: relayData,
+            });
+
+            console.log(response.output_text);
           });
         });
 

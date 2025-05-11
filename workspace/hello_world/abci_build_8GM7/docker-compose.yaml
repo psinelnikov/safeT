@@ -1,0 +1,221 @@
+version: "2.4"
+services:
+  helloworld8GM7_tm_0:
+    user: "1000"
+    mem_limit: 1024m
+    mem_reservation: 256M
+    cpus: 0.5
+    container_name: helloworld8GM7_tm_0
+    hostname: helloworld8GM7_tm_0
+    image: "valory/open-autonomy-tendermint:0.19.8"
+    restart: always
+    environment:
+      - ID=0
+      - PROXY_APP=tcp://helloworld8GM7_abci_0:26658
+      - TMHOME=/tendermint/node0
+      - CREATE_EMPTY_BLOCKS=true
+      - DEV_MODE=0
+      - LOG_FILE=/logs/node_0.txt
+      - LOG_LEVEL=INFO
+      - WRITE_TO_LOG=true
+    working_dir: /tendermint
+    command: ["run", "--no-reload", "--host=0.0.0.0", "--port=8080"]
+    depends_on:
+      helloworld8GM7_abci_0:
+        condition: service_healthy
+    networks:
+      service_hello_world_localnet:
+        ipv4_address: 192.167.11.6
+    volumes:
+      - ./nodes:/tendermint:Z
+      - ./persistent_data/logs:/logs:Z
+
+  helloworld8GM7_tm_1:
+    user: "1000"
+    mem_limit: 1024m
+    mem_reservation: 256M
+    cpus: 0.5
+    container_name: helloworld8GM7_tm_1
+    hostname: helloworld8GM7_tm_1
+    image: "valory/open-autonomy-tendermint:0.19.8"
+    restart: always
+    environment:
+      - ID=1
+      - PROXY_APP=tcp://helloworld8GM7_abci_1:26658
+      - TMHOME=/tendermint/node1
+      - CREATE_EMPTY_BLOCKS=true
+      - DEV_MODE=0
+      - LOG_FILE=/logs/node_1.txt
+      - LOG_LEVEL=INFO
+      - WRITE_TO_LOG=true
+    working_dir: /tendermint
+    command: ["run", "--no-reload", "--host=0.0.0.0", "--port=8080"]
+    depends_on:
+      helloworld8GM7_abci_1:
+        condition: service_healthy
+    networks:
+      service_hello_world_localnet:
+        ipv4_address: 192.167.11.7
+    volumes:
+      - ./nodes:/tendermint:Z
+      - ./persistent_data/logs:/logs:Z
+
+  helloworld8GM7_tm_2:
+    user: "1000"
+    mem_limit: 1024m
+    mem_reservation: 256M
+    cpus: 0.5
+    container_name: helloworld8GM7_tm_2
+    hostname: helloworld8GM7_tm_2
+    image: "valory/open-autonomy-tendermint:0.19.8"
+    restart: always
+    environment:
+      - ID=2
+      - PROXY_APP=tcp://helloworld8GM7_abci_2:26658
+      - TMHOME=/tendermint/node2
+      - CREATE_EMPTY_BLOCKS=true
+      - DEV_MODE=0
+      - LOG_FILE=/logs/node_2.txt
+      - LOG_LEVEL=INFO
+      - WRITE_TO_LOG=true
+    working_dir: /tendermint
+    command: ["run", "--no-reload", "--host=0.0.0.0", "--port=8080"]
+    depends_on:
+      helloworld8GM7_abci_2:
+        condition: service_healthy
+    networks:
+      service_hello_world_localnet:
+        ipv4_address: 192.167.11.8
+    volumes:
+      - ./nodes:/tendermint:Z
+      - ./persistent_data/logs:/logs:Z
+
+  helloworld8GM7_tm_3:
+    user: "1000"
+    mem_limit: 1024m
+    mem_reservation: 256M
+    cpus: 0.5
+    container_name: helloworld8GM7_tm_3
+    hostname: helloworld8GM7_tm_3
+    image: "valory/open-autonomy-tendermint:0.19.8"
+    restart: always
+    environment:
+      - ID=3
+      - PROXY_APP=tcp://helloworld8GM7_abci_3:26658
+      - TMHOME=/tendermint/node3
+      - CREATE_EMPTY_BLOCKS=true
+      - DEV_MODE=0
+      - LOG_FILE=/logs/node_3.txt
+      - LOG_LEVEL=INFO
+      - WRITE_TO_LOG=true
+    working_dir: /tendermint
+    command: ["run", "--no-reload", "--host=0.0.0.0", "--port=8080"]
+    depends_on:
+      helloworld8GM7_abci_3:
+        condition: service_healthy
+    networks:
+      service_hello_world_localnet:
+        ipv4_address: 192.167.11.9
+    volumes:
+      - ./nodes:/tendermint:Z
+      - ./persistent_data/logs:/logs:Z
+
+  helloworld8GM7_abci_0:
+    mem_reservation: 256M
+    mem_limit: 1024M
+    cpus: 1.0
+    container_name: helloworld8GM7_abci_0
+    image: pavel/oar-hello_world:bafybeihtmp45mbfs5tyzrgxfoimh552on6dif42ifqidifait3ej2m5zvq
+    env_file: agent_0.env
+    networks:
+      service_hello_world_localnet:
+        ipv4_address: 192.167.11.2
+    extra_hosts:
+      - "host.docker.internal:10.149.249.38"
+    volumes:
+      - ./persistent_data/logs:/logs:Z
+      - ./agent_keys/agent_0:/agent_key:Z
+      - /opt/homebrew/bin/tendermint:/usr/local/bin/tendermint:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:26658/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  helloworld8GM7_abci_1:
+    mem_reservation: 256M
+    mem_limit: 1024M
+    cpus: 1.0
+    container_name: helloworld8GM7_abci_1
+    image: pavel/oar-hello_world:bafybeihtmp45mbfs5tyzrgxfoimh552on6dif42ifqidifait3ej2m5zvq
+    env_file: agent_1.env
+    networks:
+      service_hello_world_localnet:
+        ipv4_address: 192.167.11.3
+    extra_hosts:
+      - "host.docker.internal:10.149.249.38"
+    volumes:
+      - ./persistent_data/logs:/logs:Z
+      - ./agent_keys/agent_1:/agent_key:Z
+      - /opt/homebrew/bin/tendermint:/usr/local/bin/tendermint:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:26658/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  helloworld8GM7_abci_2:
+    mem_reservation: 256M
+    mem_limit: 1024M
+    cpus: 1.0
+    container_name: helloworld8GM7_abci_2
+    image: pavel/oar-hello_world:bafybeihtmp45mbfs5tyzrgxfoimh552on6dif42ifqidifait3ej2m5zvq
+    env_file: agent_2.env
+    networks:
+      service_hello_world_localnet:
+        ipv4_address: 192.167.11.4
+    extra_hosts:
+      - "host.docker.internal:10.149.249.38"
+    volumes:
+      - ./persistent_data/logs:/logs:Z
+      - ./agent_keys/agent_2:/agent_key:Z
+      - /opt/homebrew/bin/tendermint:/usr/local/bin/tendermint:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:26658/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  helloworld8GM7_abci_3:
+    mem_reservation: 256M
+    mem_limit: 1024M
+    cpus: 1.0
+    container_name: helloworld8GM7_abci_3
+    image: pavel/oar-hello_world:bafybeihtmp45mbfs5tyzrgxfoimh552on6dif42ifqidifait3ej2m5zvq
+    env_file: agent_3.env
+    networks:
+      service_hello_world_localnet:
+        ipv4_address: 192.167.11.5
+    extra_hosts:
+      - "host.docker.internal:10.149.249.38"
+    volumes:
+      - ./persistent_data/logs:/logs:Z
+      - ./agent_keys/agent_3:/agent_key:Z
+      - /opt/homebrew/bin/tendermint:/usr/local/bin/tendermint:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:26658/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  service_hello_world_localnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.167.11.0/24

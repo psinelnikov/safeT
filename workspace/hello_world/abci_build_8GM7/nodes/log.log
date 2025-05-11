@@ -1,0 +1,4 @@
+2025-05-10 17:29:32,654 INFO root MainThread : /tendermint/node0/config/config.toml
+2025-05-10 17:29:32,658 WARNING werkzeug MainThread :  * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+2025-05-10 17:29:32,658 INFO werkzeug MainThread :  * Running on http://10.88.0.8:8080/ (Press CTRL+C to quit)
